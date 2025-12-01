@@ -1,0 +1,112 @@
+{
+	"name": "UserBlogs",
+	"version": "1.0.0",
+	"author": [
+		"Wikivy"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:UserBlogs",
+	"descriptionmsg": "userblogs-desc",
+	"license-name": "MIT",
+	"type": "specialpage",
+	"requires": {
+		"MediaWiki": ">= 1.35.0"
+	},
+	"MessagesDirs": {
+		"UserBlogs": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"UserBlogsAlias": "UserBlogs.alias.php"
+	},
+	"AutoloadNamespaces": {
+		"Wikivy\\UserBlogs\\": "includes/"
+	},
+	"SpecialPages": {
+		"CreateBlogPost": "Wikivy\\UserBlogs\\Specials\\SpecialCreateBlogPost",
+		"BlogSettings": "Wikivy\\UserBlogs\\Specials\\SpecialBlogSettings"
+	},
+	"APIModules": {
+		"blogcomment": "Wikivy\\UserBlogs\\Api\\ApiBlogComment"
+	},
+	"Hooks": {
+		"LoadExtensionSchemaUpdates": "Wikivy\\UserBlogs\\Hooks::onLoadExtensionSchemaUpdates",
+		"BeforePageDisplay": "Wikivy\\UserBlogs\\Hooks::onBeforePageDisplay",
+		"SkinTemplateNavigation::Universal": "Wikivy\\UserBlogs\\Hooks::onSkinTemplateNavigation"
+	},
+	"ResourceModules": {
+		"ext.userblogs": {
+			"styles": [
+				"modules/ext.userblogs.css"
+			]
+		},
+		"ext.userblogs.comments": {
+			"scripts": [
+				"modules/ext.userblogs.comments.js"
+			],
+			"styles": [
+				"modules/ext.userblogs.comments.css"
+			],
+			"dependencies": [
+				"mediawiki.api",
+				"mediawiki.util"
+			],
+			"messages": [
+				"userblogs-comment-submit",
+				"userblogs-comment-reply",
+				"userblogs-comment-delete",
+				"userblogs-comment-cancel",
+				"userblogs-comment-deleted",
+				"userblogs-comment-error",
+				"userblogs-comment-placeholder",
+				"userblogs-must-login-comment",
+				"userblogs-confirm-delete-comment"
+			]
+		}
+	},
+	"namespaces": [
+		{
+			"id": 200,
+			"constant": "NS_USER_BLOG",
+			"name": "User_blog",
+			"subpages": true,
+			"content": false,
+			"defaultcontentmodel": "wikitext"
+		},
+		{
+			"id": 201,
+			"constant": "NS_USER_BLOG_TALK",
+			"name": "User_blog_talk",
+			"subpages": true,
+			"content": false,
+			"defaultcontentmodel": "wikitext"
+		},
+		{
+			"id": 202,
+			"constant": "NS_BLOG",
+			"name": "Blog",
+			"subpages": true,
+			"content": false,
+			"defaultcontentmodel": "wikitext"
+		},
+		{
+			"id": 203,
+			"constant": "NS_BLOG_TALK",
+			"name": "Blog_talk",
+			"subpages": true,
+			"content": false,
+			"defaultcontentmodel": "wikitext"
+		}
+	],
+	"config": {
+		"UserBlogsEnableComments": {
+			"value": true,
+			"description": "Enable comments on blog posts"
+		},
+		"UserBlogsDefaultPublic": {
+			"value": true,
+			"description": "Whether blogs are public by default"
+		}
+	},
+	"manifest_version": 2
+}
