@@ -1,112 +1,283 @@
 {
 	"name": "UserBlogs",
 	"version": "1.0.0",
-	"author": [
-		"Wikivy"
-	],
+	"author": "Wikivy",
 	"url": "https://www.mediawiki.org/wiki/Extension:UserBlogs",
 	"descriptionmsg": "userblogs-desc",
 	"license-name": "MIT",
-	"type": "specialpage",
+	"type": "other",
+
 	"requires": {
-		"MediaWiki": ">= 1.35.0"
+		"MediaWiki": ">= 1.40.0",
+		"extensions": {
+			"VisualEditor": "*",
+			"Linter": "*",
+			"Echo": "*"
+		}
 	},
-	"MessagesDirs": {
-		"UserBlogs": [
-			"i18n"
-		]
-	},
-	"ExtensionMessagesFiles": {
-		"UserBlogsAlias": "UserBlogs.alias.php"
-	},
+
 	"AutoloadNamespaces": {
 		"Wikivy\\UserBlogs\\": "includes/"
 	},
-	"SpecialPages": {
-		"CreateBlogPost": "Wikivy\\UserBlogs\\Specials\\SpecialCreateBlogPost",
-		"BlogSettings": "Wikivy\\UserBlogs\\Specials\\SpecialBlogSettings"
+
+	"MessagesDirs": {
+		"UserBlogs": [
+			"i18n",
+			"i18n/api"
+		]
 	},
-	"APIModules": {
-		"blogcomment": "Wikivy\\UserBlogs\\Api\\ApiBlogComment"
+
+	"ExtensionMessagesFiles": {
+		"UserBlogsAlias": "UserBlogs.alias.php",
+		"UserBlogsNamespaces": "UserBlogs.namespaces.php"
 	},
-	"Hooks": {
-		"LoadExtensionSchemaUpdates": "Wikivy\\UserBlogs\\Hooks::onLoadExtensionSchemaUpdates",
-		"BeforePageDisplay": "Wikivy\\UserBlogs\\Hooks::onBeforePageDisplay",
-		"SkinTemplateNavigation::Universal": "Wikivy\\UserBlogs\\Hooks::onSkinTemplateNavigation"
-	},
+
 	"ResourceModules": {
-		"ext.userblogs": {
+		"ext.UserBlogs.styles": {
 			"styles": [
-				"modules/ext.userblogs.css"
-			]
-		},
-		"ext.userblogs.comments": {
-			"scripts": [
-				"modules/ext.userblogs.comments.js"
+				"modules/ext.UserBlogs.styles.css"
 			],
-			"styles": [
-				"modules/ext.userblogs.comments.css"
-			],
-			"dependencies": [
-				"mediawiki.api",
-				"mediawiki.util"
-			],
-			"messages": [
-				"userblogs-comment-submit",
-				"userblogs-comment-reply",
-				"userblogs-comment-delete",
-				"userblogs-comment-cancel",
-				"userblogs-comment-deleted",
-				"userblogs-comment-error",
-				"userblogs-comment-placeholder",
-				"userblogs-must-login-comment",
-				"userblogs-confirm-delete-comment"
+			"targets": [
+				"desktop",
+				"mobile"
 			]
 		}
 	},
+
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "UserBlogs"
+	},
+
+	"GroupPermissions": {
+		"user": {
+			"userblogs-post": true
+		}
+	},
+
+	"AvailableRights": [
+		"userblogs-post"
+	],
+
+	"ServiceWiringFiles": [
+		"includes/ServiceWiring.php"
+	],
+
+	"config": {
+		"UserBlogsEditWindowSeconds": {
+			"value": 900,
+			"description": "Number of seconds a normal user can edit their own blog comments after posting."
+		},
+		"UserBlogsModeratorGroups": {
+			"value": [ "sysop" ],
+			"description": "Groups that can always edit/delete blog comments."
+		}
+	},
+
 	"namespaces": [
 		{
-			"id": 200,
-			"constant": "NS_USER_BLOG",
-			"name": "User_blog",
-			"subpages": true,
-			"content": false,
-			"defaultcontentmodel": "wikitext"
-		},
-		{
-			"id": 201,
-			"constant": "NS_USER_BLOG_TALK",
-			"name": "User_blog_talk",
-			"subpages": true,
-			"content": false,
-			"defaultcontentmodel": "wikitext"
-		},
-		{
-			"id": 202,
+			"id": 7100,
 			"constant": "NS_BLOG",
-			"name": "Blog",
-			"subpages": true,
-			"content": false,
-			"defaultcontentmodel": "wikitext"
+			"name": "Blog"
 		},
 		{
-			"id": 203,
+			"id": 7101,
 			"constant": "NS_BLOG_TALK",
-			"name": "Blog_talk",
-			"subpages": true,
-			"content": false,
-			"defaultcontentmodel": "wikitext"
+			"name": "Blog_talk"
+		},
+		{
+			"id": 7102,
+			"constant": "NS_USER_BLOG",
+			"name": "User_blog"
+		},
+		{
+			"id": 7103,
+			"constant": "NS_USER_BLOG_TALK",
+			"name": "User_blog_talk"
 		}
 	],
-	"config": {
-		"UserBlogsEnableComments": {
-			"value": true,
-			"description": "Enable comments on blog posts"
+
+	"HookHandlers": {
+		"UserBlogsInstaller": {
+			"class": "Wikivy\\UserBlogs\\Hooks\\Handlers\\Installer"
 		},
-		"UserBlogsDefaultPublic": {
-			"value": true,
-			"description": "Whether blogs are public by default"
+		"UserBlogsOutputHooks": {
+			"class": "Wikivy\\UserBlogs\\Hooks\\Handlers\\OutputHooks",
+			"services": [
+				"UserBlogsBlogService",
+				"UserFactory"
+			]
+		},
+		"UserBlogsNotificationHooks": {
+			"class": "Wikivy\\UserBlogs\\Hooks\\Handlers\\NotificationHooks",
+			"services": [
+				"DBLoadBalancerFactory",
+				"UserFactory",
+				"NotificationService",
+				"MainConfig",
+				"TitleFactory"
+			]
+		},
+		"UserBlogsParserHooks": {
+			"class": "Wikivy\\UserBlogs\\Hooks\\Handlers\\ParserHooks",
+			"services": [
+				"UserBlogsBlogService"
+			]
+		},
+		"UserBlogsArticleTitleHooks": {
+			"class": "Wikivy\\UserBlogs\\Hooks\\Handlers\\ArticleTitleHooks"
 		}
 	},
+
+	"Hooks": {
+		"LoadExtensionSchemaUpdates": "UserBlogsInstaller",
+		"BeforePageDisplay": "UserBlogsOutputHooks",
+		"ArticleFromTitle": "UserBlogsArticleTitleHooks"
+	},
+
+	"RestRoutes": [
+		{
+			"path": "/userblogs/v1/posts/{postPageId}/comments",
+			"method": "GET",
+			"class": "Wikivy\\UserBlogs\\Rest\\PostCommentsViewHandler",
+			"services": [
+				"UserBlogsBlogService"
+			],
+			"pathParams": {
+				"postPageId": { "type": "integer" }
+			}
+		},
+		{
+			"path": "/userblogs/v1/posts/{postPageId}/comments",
+			"method": "POST",
+			"class": "Wikivy\\UserBlogs\\Rest\\PostCommentCreateHandler",
+			"services": [
+				"UserBlogsBlogService"
+			],
+			"pathParams": {
+				"postPageId": { "type": "integer" }
+			}
+		},
+		{
+			"path": "/userblogs/v1/posts/{postPageId}/comments/{commentId}",
+			"method": "PATCH",
+			"class": "Wikivy\\UserBlogs\\Rest\\PostCommentEditHandler",
+			"services": [
+				"UserBlogsBlogService"
+			],
+			"pathParams": {
+				"postPageId": { "type": "integer" },
+				"commentId": { "type": "integer" }
+			}
+		},
+		{
+			"path": "/userblogs/v1/comments/{commentId}/like",
+			"method": "POST",
+			"class": "Wikivy\\UserBlogs\\Rest\\CommentLikeHandler",
+			"services": [
+				"UserBlogsBlogService"
+			],
+			"pathParams": {
+				"commentId": { "type": "integer" }
+			}
+		},
+		{
+			"path": "/userblogs/v1/comments/{commentId}/favorite",
+			"method": "POST",
+			"class": "Wikivy\\UserBlogs\\Rest\\CommentFavoriteHandler",
+			"services": [
+				"UserBlogsBlogService"
+			],
+			"pathParams": {
+				"commentId": { "type": "integer" }
+			}
+		},
+
+		{
+			"path": "/userblogs/v1/users/{username}/posts",
+			"method": "GET",
+			"class": "Wikivy\\UserBlogs\\Rest\\UserPostsViewHandler",
+			"services": [
+				"UserBlogsBlogService"
+			],
+			"pathParams": {
+				"username": { "type": "string" }
+			}
+		},
+		{
+			"path": "/userblogs/v1/posts/recent",
+			"method": "GET",
+			"class": "Wikivy\\UserBlogs\\Rest\\RecentPostsViewHandler",
+			"services": [
+				"UserBlogsBlogService"
+			]
+		},
+		{
+			"path": "/userblogs/v1/users/{username}/posts",
+			"method": "POST",
+			"class": "Wikivy\\UserBlogs\\Rest\\UserPostCreateHandler",
+			"services": [
+				"UserBlogsBlogService",
+				"WikiPageFactory"
+			],
+			"pathParams": {
+				"username": { "type": "string" }
+			}
+		}
+	],
+
+	"SpecialPages": {
+		"CreateBlogPost": {
+			"class": "Wikivy\\UserBlogs\\Specials\\SpecialCreateBlogPost",
+			"services": [
+				"UserBlogsBlogService",
+				"WikiPageFactory"
+			]
+		},
+		"CreateBlogListingPage": {
+			"class": "Wikivy\\UserBlogs\\Specials\\SpecialCreateBlogListingPage",
+			"services": [
+				"WikiPageFactory"
+			]
+		}
+	},
+
+	"NotificationCategories": {
+		"userblogs-comments": {
+			"title": "userblogs-notification-category-comments-title",
+			"tooltip": "userblogs-notification-category-comments-tooltip",
+			"priority": 3
+		}
+	},
+
+	"Notifications": {
+		"userblogs-comment-on-post": {
+			"category": "userblogs-comments",
+			"section": "alert",
+			"presentation-model": "Wikivy\\UserBlogs\\Notifications\\CommentOnPostPresentationModel",
+			"bundle": {
+				"web": true,
+				"email": true,
+				"expandable": true
+			},
+			"email-subject-message": "userblogs-notification-comment-on-post-email-subject",
+			"email-body-message": "userblogs-notification-comment-on-post-email-body",
+			"icon": "chat"
+		},
+		"userblogs-reply-to-comment": {
+			"category": "userblogs-comments",
+			"section": "alert",
+			"presentation-model": "Wikivy\\UserBlogs\\Notifications\\ReplyToCommentPresentationModel",
+			"bundle": {
+				"web": true,
+				"email": true,
+				"expandable": true
+			},
+			"email-subject-message": "userblogs-notification-reply-to-comment-email-subject",
+			"email-body-message": "userblogs-notification-reply-to-comment-email-body",
+			"icon": "chat"
+		}
+	},
+
 	"manifest_version": 2
 }
