@@ -93,7 +93,7 @@
 		{
 			"id": 7103,
 			"constant": "NS_USER_BLOG_TALK",
-			"name": "User_blog_talk"
+			"name": "User_blog_comment"
 		}
 	],
 
@@ -239,6 +239,9 @@
 			"services": [
 				"WikiPageFactory"
 			]
+		},
+		"MyBlog": {
+			"class": "Wikivy\\UserBlogs\\Specials\\SpecialMyBlog"
 		}
 	},
 

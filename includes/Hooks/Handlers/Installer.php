@@ -19,22 +19,22 @@ class Installer implements LoadExtensionSchemaUpdatesHook
 
 		$updater->addExtensionTable(
 			'userblogs_posts',
-			"$dir/$type/tables-generated.sql"
+			"$dir/$type/userblogs_posts.sql"
 		);
 
 		$updater->addExtensionTable(
 			'userblogs_comments',
-			"$dir/$type/tables-generated.sql"
+			"$dir/$type/userblogs_comments.sql"
 		);
 
 		$updater->addExtensionTable(
 			'userblogs_comment_likes',
-			"$dir/$type/tables-generated.sql"
+			"$dir/$type/userblogs_comment_likes.sql"
 		);
 
 		$updater->addExtensionTable(
 			'userblogs_comment_favorites',
-			"$dir/$type/tables-generated.sql"
+			"$dir/$type/userblogs_comment_favorites.sql"
 		);
 
 	}

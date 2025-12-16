@@ -9,4 +9,5 @@ $specialPageAliases = [];
 $specialPageAliases['en'] = [
 	'CreateBlogPost' => [ 'CreateBlogPost', 'Create blog post' ],
 	'CreateBlogListingPage' => [ 'CreateBlogListingPage', 'Create blog listing page' ],
+	'MyBlog' => [ 'MyBlog', 'My blog' ],
 ];

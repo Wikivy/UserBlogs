@@ -1,0 +1,74 @@
+[
+	{
+		"name": "userblogs_posts",
+		"columns": [
+			{
+				"name": "ubp_page_id",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true
+				}
+			},
+			{
+				"name": "ubp_user_id",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true
+				}
+			},
+			{
+				"name": "ubp_username",
+				"type": "string",
+				"options": {
+					"length": 255,
+					"notnull": true
+				}
+			},
+			{
+				"name": "ubp_created",
+				"type": "mwtimestamp",
+				"options": {
+					"notnull": true
+				}
+			},
+			{
+				"name": "ubp_last_touched",
+				"type": "mwtimestamp",
+				"options": {
+					"notnull": true
+				}
+			},
+			{
+				"name": "ubp_comment_count",
+				"type": "integer",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "ubp_last_comment",
+				"type": "mwtimestamp",
+				"options": {
+					"notnull": false
+				}
+			},
+			{
+				"name": "ubp_last_comment_user",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": false
+				}
+			}
+		],
+		"indexes": [
+			{ "name":  "ubp_user_id", "columns":  ["ubp_user_id"], "unique": false },
+			{ "name":  "ubp_created", "columns":  ["ubp_created"], "unique": false  }
+		],
+		"pk": [ "ubp_page_id" ]
+	}
+]

@@ -1,0 +1,34 @@
+[
+	{
+		"name": "userblogs_comment_favorites",
+		"columns": [
+			{
+				"name": "ubf_comment_id",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true
+				}
+			},
+			{
+				"name": "ubf_user_id",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": false
+				}
+			},
+			{
+				"name": "ubf_created",
+				"type": "mwtimestamp",
+				"options": {
+					"notnull": true
+				}
+			}
+		],
+		"indexes": [
+			{ "name":  "ubf_user_id", "columns":  ["ubf_user_id"], "unique": false }
+		],
+		"pk": [ "ubf_comment_id", "ubf_user_id" ]
+	}
+]

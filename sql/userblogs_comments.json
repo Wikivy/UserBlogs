@@ -1,0 +1,84 @@
+[
+	{
+		"name": "userblogs_comments",
+		"columns": [
+			{
+				"name": "ubc_id",
+				"type": "bigint",
+				"options": {
+					"autoincrement": true,
+					"unsigned": true,
+					"notnull": true
+				}
+			},
+			{
+				"name": "ubc_post_page_id",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true
+				}
+			},
+			{
+				"name": "ubc_parent_id",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": false
+				}
+			},
+			{
+				"name": "ubc_author",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true
+				}
+			},
+			{
+				"name": "ubc_created",
+				"type": "mwtimestamp",
+				"options": {
+					"notnull": true
+				}
+			},
+			{
+				"name": "ubc_last_edited",
+				"type": "mwtimestamp",
+				"options": {
+					"notnull": true
+				}
+			},
+			{
+				"name": "ubc_last_edited_user",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": false
+				}
+			},
+			{
+				"name": "ubc_edit_count",
+				"type": "integer",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "ubc_content",
+				"type": "string",
+				"options": {
+					"notnull": false
+				}
+			}
+		],
+		"indexes": [
+			{ "name":  "ubc_post_page_id", "columns":  ["ubc_post_page_id"], "unique": false },
+			{ "name":  "ubc_parent_id", "columns":  ["ubc_parent_id"], "unique": false  },
+			{ "name":  "ubc_author", "columns":  ["ubc_author"], "unique": false  }
+		],
+		"pk": [ "ubc_id" ]
+	}
+]
